@@ -29,7 +29,7 @@ const personalInfo = {
   location: "Ahmedabad, Gujarat, India",
   about: "Computer Science undergraduate with a strong foundation in full-stack development and practical experience in building scalable applications. Passionate about Software Development, DevOps and eager to expand my skills in CI/CD, containerization, and cloud infrastructure management.",
   github: "https://github.com/RonakSiddhpura",
-  linkedin: "https://www.linkedin.com/in/ronak-siddhpura",
+  linkedin: "https://www.linkedin.com/in/ronaksiddhpura07/",
 };
 
 // Education Data
@@ -499,7 +499,7 @@ const Portfolio = () => {
                       type="email"
                       id="email"
                       className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-gray-900 focus:border-transparent"
-                      placeholder="your@email.com"
+                      placeholder="ronaksiddhpura07@gmail.com"
                     />
                   </div>
                   <div>
