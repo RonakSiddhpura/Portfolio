@@ -1,49 +1,152 @@
 import React, { useState, useEffect } from 'react';
-import { Mail, ChevronDown, Github, Linkedin } from 'lucide-react';
+import { 
+  Github, 
+  Linkedin, 
+  Mail, 
+  Phone, 
+  Code, 
+  Briefcase, 
+  GraduationCap,
+  User,
+  Code2,
+  MapPin,
+  Calendar,
+  Award,
+  Home,
+  Send,
+  ChevronUp,
+  Link,
+  FileText,
+  Download 
+} from 'lucide-react';
 
-function App() {
+// Personal Information Data
+const personalInfo = {
+  name: "Ronak Siddhpura",
+  title: "Computer Science Student & Full Stack Developer",
+  email: "ronaksiddhpura07@gmail.com",
+  phone: "+91-8460240025",
+  location: "Ahmedabad, Gujarat, India",
+  about: "Computer Science undergraduate with a strong foundation in full-stack development and practical experience in building scalable applications. Passionate about Software Development, DevOps and eager to expand my skills in CI/CD, containerization, and cloud infrastructure management.",
+  github: "https://github.com/RonakSiddhpura",
+  linkedin: "https://www.linkedin.com/in/ronak-siddhpura",
+};
+
+// Education Data
+const education = [
+  {
+    degree: "Bachelor of Technology in Computer Science and Engineering",
+    school: "Institute of Technology Nirma University",
+    location: "Ahmedabad",
+    year: "2022-25",
+    gpa: "CGPA: 6.70"
+  },
+  {
+    degree: "Diploma in Computer Engineering",
+    school: "A. V. Parekh Technical Institute (GTU)",
+    location: "Rajkot",
+    year: "2019-22",
+    gpa: "CGPA: 9.41"
+  }
+];
+
+// Skills Data
+const skills = {
+  "Programming Languages": ["Python", "Java", "JavaScript", "C/C++", "HTML/CSS"],
+  "Frameworks and Libraries": ["React.js", "Node.js", "Express.js", "Redux", "Bootstrap", "Tailwind", "Flask"],
+  "Databases": ["MongoDB", "MySQL", "Firebase"],
+  "Other": ["Docker", "REST Api", "Git", "Github", "Data structure", "AWS"]
+};
+
+// Experience Data
+const experience = [
+  {
+    title: "Full Stack Developer Intern",
+    company: "Indian Navy, INS Valsura",
+    location: "Jamnagar",
+    period: "May 2024 - July 2024",
+    responsibilities: [
+      "Developed and maintained web applications with seamless user experiences",
+      "Implemented efficient backend processes and audio classification techniques"
+    ],
+    technologies: ["Python", "Flask", "MongoDB"]
+  }
+];
+
+// Projects Data
+const projects = [
+  {
+    title: "EZYBUY",
+    description: "A comprehensive E-commerce platform",
+    details: "Developed a full-featured E-commerce platform with robust administrative functions and user-friendly customer features. Implemented secure user authentication, product management, and order processing systems. Utilized React Context API for state management and Firebase for real-time updates.",
+    technologies: ["ReactJS", "Firebase", "Tailwind CSS"],
+    github: "https://github.com/username/ezybuy",
+    demo: "https://ezybuy-demo.com"
+  },
+  {
+    title: "REAL TIME CHAT APP",
+    description: "A real-time messaging chat application",
+    details: "Implemented real-time messaging with Socket.io, allowing messages to be sent and received instantly. Enabled user authentication using JWT for secure login and registration. Integrated Cloudinary for cloud image uploads and stored persistent chat history in MongoDB.",
+    technologies: ["ReactJS", "Socket.io", "Node.js", "Redux", "MongoDB", "Cloudinary"],
+    github: "https://github.com/username/chat-app",
+    demo: "https://chat-app-demo.com"
+  },
+  {
+    title: "CHAT WITH PDF",
+    description: "LLM-powered document QA system",
+    details: "Developed an intelligent document analysis system using Large Language Models. Implemented document processing pipeline including PDF parsing and text extraction.",
+    technologies: ["Python", "LLM", "Streamlit"],
+    github: "https://github.com/username/chat-pdf",
+    demo: "https://chat-pdf-demo.com"
+  }
+];
+
+// Certifications Data
+const certifications = [
+  {
+    title: "AWS Academy Cloud Foundations",
+    date: "May 2024",
+    link: "https://www.credly.com/badges/01696a5b-5d6e-46c2-9884-356bac250301/public_url"
+  },
+  {
+    title: "Google Python Crash Course",
+    date: "Jul 2023",
+    link: "https://www.coursera.org/account/accomplishments/verify/SWRSQ5CTBG8S"
+  },
+  {
+    title: "Java (Basic) - HackerRank",
+    date: "Jul 2023",
+    link: "https://www.hackerrank.com/certificates/16855a6d0e75"
+  }
+];
+
+const Portfolio = () => {
   const [activeSection, setActiveSection] = useState('home');
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [profileImage, setProfileImage] = useState('');
-
-  const GITHUB_USERNAME = 'RonakSiddhpura';
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const resumeUrl = "https://drive.google.com/file/d/11TwM6hnPT9SvNx5iNKL1UgbIi227RDRm/view?usp=drive_link";
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(
-          `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=6`
-        );
-        if (!response.ok) {
-          throw new Error('Failed to fetch projects');
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 400);
+
+      const sections = ['home', 'about', 'projects', 'experience', 'contact'];
+      const current = sections.find(section => {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          return rect.top <= 100 && rect.bottom >= 100;
         }
-        const data = await response.json();
-        setProjects(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+        return false;
+      });
+
+      if (current) {
+        setActiveSection(current);
       }
     };
 
-    const fetchProfileImage = async () => {
-      try {
-        const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch user data');
-        }
-        const data = await response.json();
-        setProfileImage(data.avatar_url);
-      } catch (err) {
-        console.error('Error fetching profile image:', err);
-      }
-    };
-
-    fetchProjects();
-    fetchProfileImage();
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const scrollToSection = (sectionId) => {
@@ -51,253 +154,424 @@ function App() {
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
       setActiveSection(sectionId);
+      setIsMenuOpen(false);
     }
   };
 
-  const Navigation = () => (
-    <nav className="fixed top-0 left-0 right-0 bg-gray-900/80 backdrop-blur-sm z-50">
-      <div className="max-w-6xl mx-auto px-4 py-4">
-        <div className="flex justify-between items-center">
-          <div className="text-2xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 text-transparent bg-clip-text">
-            Ronak Siddhpura
-          </div>
-          <div className="flex space-x-6">
-            {['home', 'projects', 'about', 'education', 'experience', 'contact'].map((section) => (
-              <button
-                key={section}
-                onClick={() => scrollToSection(section)}
-                className={`text-sm uppercase tracking-wider ${
-                  activeSection === section
-                    ? 'text-purple-400'
-                    : 'text-gray-300 hover:text-purple-300'
-                }`}
-              >
-                {section.charAt(0).toUpperCase() + section.slice(1)}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-    </nav>
-  );
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
-  const Hero = () => (
-    <section id="home" className="min-h-screen flex items-center justify-center pt-16 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-blue-900/20" />
-      <div className="text-center z-10 space-y-8">
-        {profileImage && (
-          <img
-            src={profileImage}
-            alt="Ronak Siddhpura"
-            className="w-32 h-32 rounded-full mx-auto border-4 border-purple-500/30"
-          />
-        )}
-        <h1 className="text-6xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 text-transparent bg-clip-text">
-          Ronak Siddhpura
-        </h1>
-        <p className="text-2xl text-gray-300">Software Developer & DevOps Engineer</p>
-        <p className="max-w-2xl mx-auto text-gray-400 px-4">
-          Diligent and goal-oriented student passionate about Software Development and DevOps. Ready to drive innovation as a global leader.
-        </p>
-        <div className="flex justify-center space-x-6">
-          <a href="https://www.linkedin.com/in/ronaksiddhpura07/" target="_blank" rel="noopener noreferrer">
-            <Linkedin className="w-6 h-6 text-purple-400 hover:text-purple-300 cursor-pointer" />
-          </a>
-          <a href="https://github.com/RonakSiddhpura" target="_blank" rel="noopener noreferrer">
-            <Github className="w-6 h-6 text-purple-400 hover:text-purple-300 cursor-pointer" />
-          </a>
-          <a href="mailto:22bce540@nirmauni.ac.in">
-            <Mail className="w-6 h-6 text-purple-400 hover:text-purple-300 cursor-pointer" />
-          </a>
-        </div>
-        <ChevronDown 
-          className="w-8 h-8 text-purple-400 animate-bounce cursor-pointer mx-auto mt-12"
-          onClick={() => scrollToSection('projects')}
-        />
-      </div>
-    </section>
-  );
+  // const NavButton = ({ icon: Icon, label, section, isDownload = false, href  }) => (
+  
+  //   <button
+  //     onClick={() => scrollToSection(section)}
+  //     className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+  //       activeSection === section 
+  //         ? 'bg-gray-900 text-white shadow-lg' 
+  //         : 'text-gray-600 hover:bg-gray-100'
+  //     }`}
+  //   >
+  //     <Icon className="w-5 h-5" />
+  //     <span>{label}</span>
+  //   </button>
+  // );
 
-  const Projects = () => (
-    <section id="projects" className="min-h-screen py-20 relative">
-      <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-purple-400 to-pink-400 text-transparent bg-clip-text">
-          My Projects
-        </h2>
-        
-        {loading && (
-          <div className="text-center text-gray-400">
-            Loading projects...
-          </div>
-        )}
-        
-        {error && (
-          <div className="text-center text-red-400">
-            Error: {error}
-          </div>
-        )}
-        
-        {!loading && !error && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* GitHub Projects from API */}
-            {projects.map((project) => (
-              <div key={project.id} className="bg-gray-800/50 rounded-xl overflow-hidden">
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-purple-300">
-                    {project.name}
-                  </h3>
-                  <p className="text-gray-400 h-20 overflow-y-auto">
-                    {project.description || 'No description available'}
-                  </p>
-                  <a href={project.html_url} target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 mt-4 inline-block">
-                    View on GitHub
-                  </a>
-                </div>
-              </div>
-            ))}
+  const NavButton = ({ icon: Icon, label, section, isDownload = false, href }) => {
+    if (isDownload && href) {
+      return (
+        <a
+          href={href}
+          download
+          className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all text-gray-600 hover:bg-gray-100"
+        >
+          <Icon className="w-5 h-5" />
+          <span>{label}</span>
+        </a>
+      );
+    }
+  
+    return (
+      <button
+        onClick={() => scrollToSection(section)}
+        className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+          activeSection === section
+            ? 'bg-gray-900 text-white shadow-lg'
+            : 'text-gray-600 hover:bg-gray-100'
+        }`}
+      >
+        <Icon className="w-5 h-5" />
+        <span>{label}</span>
+      </button>
+    );
+  };
+  
+  
 
-            {/* Manually added projects */}
-            <div className="bg-gray-800/50 rounded-xl p-6">
-              <h3 className="text-xl font-semibold text-purple-300">Indian Food Recipes</h3>
-              <p className="text-gray-400">A recipe platform for famous Indian dishes. Built with HTML, CSS, Bootstrap, PHP, JavaScript, MySQL.</p>
-              <a href="https://github.com/RonakSiddhpura/Indian-Food-Recipes" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 mt-4 inline-block">
-                View on GitHub
-              </a>
-            </div>
-            <div className="bg-gray-800/50 rounded-xl p-6">
-              <h3 className="text-xl font-semibold text-purple-300">NewsApp</h3>
-              <p className="text-gray-400">A real-time news application built with React, Bootstrap, and News API.</p>
-              <a href="https://github.com/RonakSiddhpura/Newsify" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 mt-4 inline-block">
-                View on GitHub
-              </a>
-            </div>
-            <div className="bg-gray-800/50 rounded-xl p-6">
-              <h3 className="text-xl font-semibold text-purple-300">Chat with PDF</h3>
-              <p className="text-gray-400">An LLM-powered platform for answering questions from PDFs. Built with Python, Streamlit, and LLM models.</p>
-              <a href="https://github.com/RonakSiddhpura/MineD2024" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 mt-4 inline-block">
-                View on GitHub
-              </a>
-            </div>
-          </div>
-        )}
-      </div>
-    </section>
-  );
-
-  const About = () => (
-    <section id="about" className="min-h-screen py-20 relative">
-      <div className="max-w-3xl mx-auto px-4 text-center">
-        <h2 className="text-4xl font-bold mb-12 bg-gradient-to-r from-purple-400 to-pink-400 text-transparent bg-clip-text">
-          About Me
-        </h2>
-        <div className="space-y-8">
-          <div className="space-y-6 text-gray-300">
-            <p>
-              I'm a diligent and goal-oriented student passionate about Software Development and DevOps. 
-              With a strong foundation in computer science and hands-on experience in various projects, 
-              I'm eager to contribute my skills and drive innovation in the tech industry.
-            </p>
-            <h3 className="text-2xl font-bold">Skills</h3>
-            <div className="flex flex-wrap justify-center gap-4">
-              {['React.js', 'Node.js', 'Express.js', 'MongoDB', 'Flask', 'Python', 'C', 'C++', 'Java', 'AWS', 'Firebase', 'Tailwind CSS', 'Bootstrap', 'Docker'].map((skill) => (
-                <span key={skill} className="bg-gray-800 px-3 py-1 rounded-full text-sm">{skill}</span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-
-  const Education = () => (
-    <section id="education" className="min-h-screen py-20">
-      <div className="max-w-3xl mx-auto px-4 text-center">
-        <h2 className="text-4xl font-bold mb-12 bg-gradient-to-r from-purple-400 to-pink-400 text-transparent bg-clip-text">
-          Education
-        </h2>
-        <div className="space-y-8">
-          <div>
-            <h3 className="text-2xl font-bold text-purple-300">B.Tech - Computer Science and Engineering</h3>
-            <p className="text-gray-400">Nirma University, Ahmedabad (2022-2025)</p>
-            <p className="text-gray-400">CGPA: 6.70 / 10</p>
-          </div>
-          <div>
-            <h3 className="text-2xl font-bold text-purple-300">Diploma - Computer Engineering</h3>
-            <p className="text-gray-400">A.V.Parekh Technical Institute, Rajkot (2022)</p>
-            <p className="text-gray-400">CGPA: 9.41 / 10</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-
-  const Experience = () => (
-    <section id="experience" className="min-h-screen py-20">
-      <div className="max-w-3xl mx-auto px-4 text-center">
-        <h2 className="text-4xl font-bold mb-12 bg-gradient-to-r from-purple-400 to-pink-400 text-transparent bg-clip-text">
-          Experience
-        </h2>
-        <div className="bg-gray-800/50 rounded-xl p-6 text-left">
-          <h3 className="text-2xl font-bold text-purple-300">Full Stack Web Developer</h3>
-          <p className="text-gray-400">Indian Navy | 27 May, 2024 - 12 Jul, 2024</p>
-          <ul className="list-disc list-inside text-gray-300 mt-4">
-            <li>Worked on both frontend and backend development</li>
-            <li>Built and maintained robust web applications</li>
-            <li>Expanded knowledge in audio classification techniques</li>
-          </ul>
-          <p className="text-gray-400 mt-4"><strong>Key Skills:</strong> Python, Flask, MongoDB</p>
-        </div>
-      </div>
-    </section>
-  );
-
-  const Contact = () => (
-    <section id="contact" className="min-h-screen py-20 relative">
-      <div className="max-w-xl mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-purple-400 to-pink-400 text-transparent bg-clip-text">
-          Get in Touch
-        </h2>
-        <form className="space-y-6">
-          <div>
-            <input
-              type="text"
-              placeholder="Name"
-              className="w-full px-6 py-3 bg-gray-800/50 rounded-lg border border-gray-700 focus:border-purple-500 focus:outline-none text-gray-300"
-            />
-          </div>
-          <div>
-            <input
-              type="email"
-              placeholder="Email"
-              className="w-full px-6 py-3 bg-gray-800/50 rounded-lg border border-gray-700 focus:border-purple-500 focus:outline-none text-gray-300"
-            />
-          </div>
-          <div>
-            <textarea
-              placeholder="Message"
-              rows={6}
-              className="w-full px-6 py-3 bg-gray-800/50 rounded-lg border border-gray-700 focus:border-purple-500 focus:outline-none text-gray-300"
-            />
-          </div>
-          <button className="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:opacity-90 transition-opacity">
-            Send Message
-          </button>
-        </form>
-      </div>
-    </section>
+  const SectionTitle = ({ icon: Icon, title }) => (
+    <div className="flex items-center gap-3 mb-6">
+      <Icon className="w-6 h-6 text-gray-700" />
+      <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
+    </div>
   );
 
   return (
-    <div className="bg-gray-900 text-white min-h-screen">
-      <Navigation />
-      <Hero />
-      <Projects />
-      <About />
-      <Education />
-      <Experience />
-      <Contact />
+    <div className="min-h-screen bg-gray-50">
+      {/* Fixed Header */}
+      <header className="fixed top-0 left-0 right-0 bg-white border-b z-50">
+        <div className="max-w-6xl mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+            <img 
+              src="https://github.com/RonakSiddhpura.png" 
+              alt={personalInfo.name}
+              className="h-12 w-12 rounded-full object-cover border-2 border-gray-900 hover:scale-110 transition-transform duration-300"
+            />
+              <div>
+                <h1 className="text-xl font-bold text-gray-900">{personalInfo.name}</h1>
+                <p className="text-sm text-gray-600">{personalInfo.title}</p>
+              </div>
+            </div>
+            
+            {/* Mobile Menu Button */}
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="md:hidden p-2 text-gray-600 hover:text-gray-900"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2} 
+                  d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+                />
+              </svg>
+            </button>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex gap-2">
+              <NavButton icon={Home} label="Home" section="home" />
+              <NavButton icon={User} label="About" section="about" />
+              <NavButton icon={Code2} label="Projects" section="projects" />
+              <NavButton icon={Briefcase} label="Experience" section="experience" />
+              <NavButton icon={Mail} label="Contact" section="contact" />
+              <NavButton  icon={Download}  label="Resume" isDownload={true} href={resumeUrl}/>
+            </nav>
+          </div>
+
+          {/* Mobile Navigation Menu */}
+          {isMenuOpen && (
+            <nav className="md:hidden mt-4 space-y-2">
+              <NavButton icon={Home} label="Home" section="home" />
+              <NavButton icon={User} label="About" section="about" />
+              <NavButton icon={Code2} label="Projects" section="projects" />
+              <NavButton icon={Briefcase} label="Experience" section="experience" />
+              <NavButton icon={Mail} label="Contact" section="contact" />
+              <NavButton  icon={Download}  label="Resume" isDownload={true} href={resumeUrl}/>
+            </nav>
+          )}
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="pt-24">
+        {/* Hero Section */}
+        <section id="home" className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+          <div className="max-w-6xl mx-auto px-4 py-16 text-center">
+          <img 
+          src="https://github.com/RonakSiddhpura.png"
+          alt={personalInfo.name}
+          className="w-32 h-32 rounded-full mx-auto mb-8 object-cover border-4 border-gray-900 hover:scale-110 transition-transform duration-300 shadow-lg"
+          />
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Hi, I'm {personalInfo.name}
+            </h1>
+            <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+              {personalInfo.about}
+            </p>
+            <div className="flex flex-col md:flex-row justify-center gap-4">
+              <button 
+                onClick={() => scrollToSection('projects')}
+                className="px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+              >
+                View My Work
+              </button>
+              <button 
+                onClick={() => scrollToSection('contact')}
+                className="px-6 py-3 border-2 border-gray-900 text-gray-900 rounded-lg hover:bg-gray-900 hover:text-white transition-colors"
+              >
+                Contact Me
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* About Section */}
+        <section id="about" className="py-16 pt-28">
+          <div className="max-w-6xl mx-auto px-4">
+            <SectionTitle icon={User} title="About Me" />
+            
+            {/* Education */}
+            <div className="mb-12">
+              <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <GraduationCap className="w-5 h-5" />
+                Education
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {education.map((edu, index) => (
+                  <div key={index} className="bg-white p-6 rounded-xl shadow-sm border">
+                    <h4 className="font-bold text-gray-900">{edu.degree}</h4>
+                    <p className="text-gray-600">{edu.school}</p>
+                    <p className="text-gray-600">{edu.location}</p>
+                    <div className="flex items-center gap-2 mt-2 text-gray-500">
+                      <Calendar className="w-4 h-4" />
+                      <span>{edu.year}</span>
+                    </div>
+                    <div className="flex items-center gap-2 mt-2 text-gray-500">
+                      <Award className="w-4 h-4" />
+                      <span>{edu.gpa}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Skills */}
+            <div>
+              <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <Code className="w-5 h-5" />
+                Skills
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {Object.entries(skills).map(([category, skillList]) => (
+                  <div key={category} className="bg-white p-6 rounded-xl shadow-sm border">
+                    <h4 className="font-bold text-gray-900 mb-3">{category}</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {skillList.map((skill, index) => (
+                        <span 
+                          key={index}
+                          className="px-3 py-1 bg-gray-100 rounded-full text-gray-700 text-sm"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Projects Section */}
+        <section id="projects" className="py-16 pt-28 bg-gray-50">
+          <div className="max-w-6xl mx-auto px-4">
+            <SectionTitle icon={Code2} title="Projects" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {projects.map((project, index) => (
+                <div key={index} className="bg-white rounded-xl shadow-sm border p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">{project.title}</h3>
+                  <p className="text-gray-600 mb-4">{project.description}</p>
+                  <p className="text-gray-600 mb-4">{project.details}</p>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {project.technologies.map((tech, index) => (
+                      <span 
+                        key={index}
+                        className="px-3 py-1 bg-gray-100 rounded-full text-gray-700 text-sm"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="flex gap-4">
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
+                    >
+                      <Github className="w-5 h-5" />
+                      <span>Code</span>
+                    </a>
+                    <a
+                      href={project.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
+                    >
+                      <Link className="w-5 h-5" />
+                      <span>Demo</span>
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Experience Section */}
+        <section id="experience" className="py-16 pt-28">
+          <div className="max-w-6xl mx-auto px-4">
+            <SectionTitle icon={Briefcase} title="Experience" />
+            <div className="space-y-6">
+              {experience.map((exp, index) => (
+                <div key={index} className="bg-white rounded-xl shadow-sm border p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">{exp.title}</h3>
+                  <div className="flex flex-wrap gap-x-4 gap-y-2 mb-4">
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <Briefcase className="w-4 h-4" />
+                      <span>{exp.company}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <MapPin className="w-4 h-4" />
+                      <span>{exp.location}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <Calendar className="w-4 h-4" />
+                      <span>{exp.period}</span>
+                    </div>
+                  </div>
+                  <ul className="list-disc list-inside space-y-2 mb-4 text-gray-600">
+                    {exp.responsibilities.map((resp, index) => (
+                      <li key={index}>{resp}</li>
+                    ))}
+                  </ul>
+                  <div className="flex flex-wrap gap-2">
+                    {exp.technologies.map((tech, index) => (
+                      <span 
+                        key={index}
+                        className="px-3 py-1 bg-gray-100 rounded-full text-gray-700 text-sm"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Certifications */}
+            <div className="mt-12">
+              <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <FileText className="w-5 h-5" />
+                Certifications
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {certifications.map((cert, index) => (
+                  <a
+                    key={index}
+                    href={cert.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-white p-6 rounded-xl shadow-sm border hover:shadow-md transition-shadow"
+                  >
+                    <h4 className="font-bold text-gray-900">{cert.title}</h4>
+                    <div className="flex items-center gap-2 mt-2 text-gray-500">
+                      <Calendar className="w-4 h-4" />
+                      <span>{cert.date}</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Contact Section */}
+        <section id="contact" className="py-16 pt-28 bg-gray-50">
+          <div className="max-w-6xl mx-auto px-4">
+            <SectionTitle icon={Mail} title="Contact Me" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="bg-white rounded-xl shadow-sm border p-6">
+                <form className="space-y-4">
+                  <div>
+                    <label className="block text-gray-700 mb-2" htmlFor="name">Name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                      placeholder="Your Name"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 mb-2" htmlFor="email">Email</label>
+                    <input
+                      type="email"
+                      id="email"
+                      className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                      placeholder="your@email.com"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 mb-2" htmlFor="message">Message</label>
+                    <textarea
+                      id="message"
+                      rows="4"
+                      className="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-gray-900 focus:border-transparent"
+                      placeholder="Your message..."
+                    ></textarea>
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors flex items-center justify-center gap-2"
+                  >
+                    <Send className="w-4 h-4" />
+                    Send Message
+                  </button>
+                </form>
+              </div>
+              <div className="bg-white rounded-xl shadow-sm border p-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Contact Information</h3>
+                <div className="space-y-4">
+                  <a href={`mailto:${personalInfo.email}`} className="flex items-center gap-3 text-gray-600 hover:text-gray-900">
+                    <Mail className="w-5 h-5" />
+                    <span>{personalInfo.email}</span>
+                  </a>
+                  <div className="flex items-center gap-3 text-gray-600">
+                    <Phone className="w-5 h-5" />
+                    <span>{personalInfo.phone}</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-gray-600">
+                    <MapPin className="w-5 h-5" />
+                    <span>{personalInfo.location}</span>
+                  </div>
+                  <div className="flex gap-4 mt-6">
+                    <a
+                      href={personalInfo.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
+                    >
+                      <Github className="w-6 h-6" />
+                    </a>
+                    <a
+                      href={personalInfo.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
+                    >
+                      <Linkedin className="w-6 h-6" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* Scroll to Top Button */}
+      {showScrollTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 p-3 bg-gray-900 text-white rounded-full shadow-lg hover:bg-gray-800 transition-colors animate-bounce"
+          aria-label="Scroll to top"
+        >
+          <ChevronUp className="w-6 h-6" />
+        </button>
+      )}
     </div>
   );
-}
+};
 
-export default App;
+export default Portfolio;
