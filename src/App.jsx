@@ -26,7 +26,7 @@ const personalInfo = {
   title: "Computer Science Student & Full Stack Developer",
   email: "ronaksiddhpura07@gmail.com",
   phone: "+91-8460240025",
-  location: "Ahmedabad, Gujarat, India",
+  location: "Rajkot, Gujarat, India",
   about: "Computer Science undergraduate with a strong foundation in full-stack development and practical experience in building scalable applications. Passionate about Software Development, DevOps and eager to expand my skills in CI/CD, containerization, and cloud infrastructure management.",
   github: "https://github.com/RonakSiddhpura",
   linkedin: "https://www.linkedin.com/in/ronaksiddhpura07/",
