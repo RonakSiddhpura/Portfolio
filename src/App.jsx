@@ -39,7 +39,7 @@ const education = [
     school: "Institute of Technology Nirma University",
     location: "Ahmedabad",
     year: "2022-25",
-    gpa: "CGPA: 6.70"
+    gpa: "CGPA: 6.73"
   },
   {
     degree: "Diploma in Computer Engineering",
